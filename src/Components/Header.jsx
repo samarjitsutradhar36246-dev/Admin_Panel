@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Search, Bell, Phone, User } from "lucide-react";
-import FoodBNBLOGO from "../assets/foodbnb1.svg";
-
+import FoodBNBLogo from "../assets/foodbnb1.svg";
 /**
  * FoodBNB Admin Header Component
  * Fixed header with gradient background matching the sidebar
@@ -18,23 +17,18 @@ const AdminHeader = () => {
     <header className="fixed top-0 right-0 left-0 h-16 bg-linear-to-r from-red-500 to-orange-500 shadow-lg z-30 ">
       <div className="h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         {/* LEFT SECTION: Logo and Brand Name */}
-        <div className="flex items-center gap-3">
-          {/* Logo container with white background for contrast */}
-          <div className="w-10 h-10 rounded-lg flex items-center justify-center">
+        {/* LEFT SECTION: Logo and Brand Name */}
+        <div className="flex items-center gap-3 ml-10">
+          {/* Logo */}
+          <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
             <img
-              src={FoodBNBLOGO}
+              src={FoodBNBLogo}
               alt="FoodBNB Logo"
               className="w-8 h-8 object-contain"
-              onError={(e) => {
-                // Fallback if SVG fails to load - show text instead
-                e.target.style.display = "none";
-                e.target.parentElement.innerHTML =
-                  '<span class="text-red-500 font-bold text-lg">F</span>';
-              }}
             />
           </div>
 
-          {/* Brand name - hidden on very small screens to save space */}
+          {/* Brand name */}
           <div className="hidden sm:block">
             <h1 className="text-white font-bold text-lg tracking-tight">
               FoodBNB Admin

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Menu, X, Home, ShoppingCart, Users, Settings } from "lucide-react";
-import FoodBNBLOGO from "../assets/foodbnb1.svg";
+import FoodBNBLogo from "../assets/foodbnb1.svg";
 
 /**
  * FoodBNB Admin Panel Sidebar Component
@@ -27,7 +27,7 @@ const FoodBNBSidebar = () => {
   const navigationItems = [
     { name: "Dashboard", icon: Home, path: "/dashboard" },
     { name: "Orders", icon: ShoppingCart, path: "/orders" },
-    { name: "Admin", icon: Users, path: "/users" },
+    { name: "Login", icon: Users, path: "/users" },
     { name: "Settings", icon: Settings, path: "/settings" },
   ];
 
@@ -46,7 +46,7 @@ const FoodBNBSidebar = () => {
       {/* Overlay - Appears when sidebar is open on mobile/tablet */}
       {/* Clicking overlay closes the sidebar */}
       <div
-        className={`fixed inset-0 bg-black bg-opacity-50 z-30 transition-opacity duration-300 lg:hidden ${
+        className={`fixed inset-0 bg-black bg-opacity-50 pt-16 z-30 transition-opacity duration-300 lg:hidden ${
           isOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
         onClick={toggleSidebar}
@@ -54,21 +54,18 @@ const FoodBNBSidebar = () => {
 
       {/* Sidebar Container */}
       <aside
-        className={`fixed top-0 left-0 h-full w-64 pt-20
-              bg-linear-to-b from-red-500 to-orange-500
-              text-white shadow-2xl z-40
-              transform transition-transform duration-300 ease-in-out ${
-                isOpen ? "translate-x-0" : "-translate-x-full"
-              }`}
+        className={`fixed top-16 left-0 h-full w-64 bg-linear-to-b from-red-500 to-orange-500 text-white shadow-2xl z-40 transform transition-transform duration-300 ease-in-out ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
         {/* Sidebar Header with Logo and Brand Name */}
-        <div className="flex items-center gap-3 p-6 border-b border-white border-opacity-20">
+        <div className="flex items-center gap-3 p-6 pt-20 border-b border-white border-opacity-20">
           {/* Logo Image */}
-          <div className="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden shadow-md bg-linear-to-b from-red-500 to-orange-500">
+          <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
             <img
-              src={FoodBNBLOGO}
+              src={FoodBNBLogo}
               alt="FoodBNB Logo"
-              className="w-8 h-8 object-contain"
+              className="w-full h-full object-cover"
               onError={(e) => {
                 // Fallback if image doesn't load - display first letter
                 e.target.style.display = "none";
@@ -92,9 +89,7 @@ const FoodBNBSidebar = () => {
                 <li key={item.name}>
                   <a
                     href={item.path}
-                    className="flex items-center gap-3 px-4 py-3 rounded-lg text-white
-           hover:bg-linear-to-r hover:from-red-600 hover:to-orange-600
-           transition-all duration-200 group"
+                    className="flex items-center gap-3 px-4 py-3 rounded-lg text-white hover:bg-white hover:bg-opacity-20 transition-all duration-200 group"
                   >
                     {/* Icon with subtle animation on hover */}
                     <IconComponent
