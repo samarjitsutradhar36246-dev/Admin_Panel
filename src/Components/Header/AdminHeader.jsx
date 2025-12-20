@@ -1,6 +1,6 @@
 import React from "react";
 import { Menu, X, Search, Bell, User } from "lucide-react";
-import FoodBNBLogo from "../assets/foodbnb1.svg";
+import FoodBNBLogo from "../../assets/foodbnb1.svg";
 
 const AdminHeader = ({ toggleSidebar, isSidebarOpen }) => {
   return (

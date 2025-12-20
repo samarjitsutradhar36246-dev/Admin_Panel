@@ -1,50 +1,73 @@
 import "./App.css";
-import Dashboard from "./Components/FoodBNBSideBar.jsx";
 import React, { useState } from "react";
-import Header from "./Components/AdminHeader.jsx";
-import AdminBody from "./Components/Admin_Body.jsx";
-import DashboardCharts from "./Components/DashboardsCharts.jsx";
-import OrderList from "./Components/OrderList.jsx";
-import AdminAuth from "./Components/AdminAuth";
+
+// Import components with correct paths
+import AdminHeader from "./Components/Header/AdminHeader.jsx";
+import FoodBNBSidebar from "./Components/SideBar/FoodBNBSideBar.jsx";
+import AdminPanel from "./Components/Body/Admin_Body.jsx";
+import DashboardCharts from "./Components/Charts/DashboardCharts.jsx";
+import OrderList from "./Components/OrderList/OrderList.jsx";
+import OrderListDashboard from "./Components/OrderListDashboard/OrderListDashboard.jsx";
+import AdminAuth from "./Components/Login/AdminAuth.jsx";
 
 function App() {
   // State to control sidebar open/close
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // Toggle function to pass to components
+  // Toggle function
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+    console.log("Sidebar toggled:", !isSidebarOpen);
   };
 
-  // ✅ ADD THIS LINE
-  const isLoginPage = window.location.pathname === "/login";
+  // Get current path
+  const currentPath = window.location.pathname;
+  console.log("Current path:", currentPath);
+  console.log("AdminHeader imported:", typeof AdminHeader);
 
+  // LOGIN PAGE
+  if (currentPath === "/login") {
+    return <AdminAuth />;
+  }
+
+  // ORDERS PAGE
+  if (currentPath === "/orders") {
+    return (
+      <div className="relative min-h-screen bg-gray-950">
+        <AdminHeader
+          toggleSidebar={toggleSidebar}
+          isSidebarOpen={isSidebarOpen}
+        />
+        <FoodBNBSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+        <main
+          className={`transition-all duration-300 ${
+            isSidebarOpen ? "lg:ml-64" : "ml-0"
+          } pt-16`}
+        >
+          <OrderListDashboard />
+        </main>
+      </div>
+    );
+  }
+
+  // MAIN PAGE
   return (
-    <>
-      {/* ✅ ADD THIS CONDITION */}
-      {isLoginPage ? (
-        <AdminAuth />
-      ) : (
-        <>
-          {/* Header with sidebar control */}
-          <Header toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
-
-          {/* Sidebar component */}
-          <Dashboard isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-
-          {/* Main content area - shifts right when sidebar opens */}
-          <main
-            className={`transition-all duration-300 ${
-              isSidebarOpen ? "lg:ml-64" : "ml-0"
-            } bg-gray-950 min-h-screen text-white`}
-          >
-            <AdminBody />
-            <DashboardCharts />
-            <OrderList />
-          </main>
-        </>
-      )}
-    </>
+    <div className="relative min-h-screen bg-gray-950">
+      <AdminHeader
+        toggleSidebar={toggleSidebar}
+        isSidebarOpen={isSidebarOpen}
+      />
+      <FoodBNBSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      <main
+        className={`transition-all duration-300 ${
+          isSidebarOpen ? "lg:ml-64" : "ml-0"
+        } pt-16`}
+      >
+        <AdminPanel />
+        <DashboardCharts />
+        <OrderList />
+      </main>
+    </div>
   );
 }
 
