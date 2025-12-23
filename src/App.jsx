@@ -12,7 +12,7 @@ import AdminAuth from "./Components/Login/AdminAuth.jsx";
 
 function App() {
   // State to control sidebar open/close
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   // Toggle function
   const toggleSidebar = () => {
