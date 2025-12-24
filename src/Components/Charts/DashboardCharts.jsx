@@ -103,22 +103,28 @@ export default function DashboardCharts() {
   const popOutDistance = 0;
 
   return (
-    <div className="min-h-screen bg-gray-900 p-8">
+    <div className="min-h-screen bg-gray-900 p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-white mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white mb-6 sm:mb-8">
           Analytics Dashboard
         </h1>
 
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {/* Pie Chart Card - Revenue */}
-          <div className="bg-gray-800 rounded-xl shadow-black/50 shadow-lg p-6">
-            <div className="flex items-center gap-2 mb-6">
+          <div className="bg-gray-800 rounded-xl shadow-black/50 shadow-lg p-4 sm:p-6">
+            <div className="flex items-center gap-2 mb-4 sm:mb-6">
               <TrendingUp className="w-5 h-5 text-red-500" />
-              <h2 className="text-xl font-semibold text-white">Revenue</h2>
+              <h2 className="text-lg sm:text-xl font-semibold text-white">Revenue</h2>
             </div>
 
-            <div className="flex items-center justify-center">
-              <svg width="400" height="400" viewBox="-100 -100 500 500">
+            <div className="flex items-center justify-center overflow-x-auto">
+              <svg 
+                width="100%" 
+                height="auto" 
+                viewBox="-100 -100 500 500"
+                className="min-h-64 sm:min-h-80 w-full max-w-sm"
+                preserveAspectRatio="xMidYMid meet"
+              >
                 {segments.map((segment, index) => {
                   const midAngle = (segment.startAngle + segment.endAngle) / 2;
                   const isActive = activeSegment === index;
@@ -279,26 +285,26 @@ export default function DashboardCharts() {
               </svg>
             </div>
 
-            <div className="mt-6 space-y-3">
+            <div className="mt-4 sm:mt-6 space-y-2 sm:space-y-3">
               {pieData.map((item, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between p-3 bg-gray-800 rounded-lg
+                  className="flex items-center justify-between p-2 sm:p-3 bg-gray-800 rounded-lg
            border border-gray-700
            transition-all duration-300 cursor-pointer
            hover:scale-[1.05] hover:shadow-black/50 hover:bg-gray-700 hover:border-gray-600"
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 sm:gap-3">
                     <div
-                      className="w-4 h-4 rounded-full"
+                      className="w-3 h-3 sm:w-4 sm:h-4 rounded-full"
                       style={{ backgroundColor: item.color }}
                     />
-                    <span className="text-sm font-medium text-white">
+                    <span className="text-xs sm:text-sm font-medium text-white">
                       {item.label}
                     </span>
                   </div>
                   <div className="text-right">
-                    <div className="text-sm font-bold text-white">
+                    <div className="text-xs sm:text-sm font-bold text-white">
                       ${item.value.toLocaleString()}
                     </div>
                     <div className="text-xs text-gray-400">
@@ -311,20 +317,20 @@ export default function DashboardCharts() {
           </div>
 
           {/* Bar Chart Card - Order Summary */}
-          <div className="bg-gray-800 rounded-xl shadow-black/50 shadow-lg p-6">
-            <div className="flex items-center justify-between mb-6">
+          <div className="bg-gray-800 rounded-xl shadow-black/50 shadow-lg p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
               <div className="flex items-center gap-2">
                 <BarChart3 className="w-5 h-5 text-red-500" />
-                <h2 className="text-xl font-semibold text-white">
+                <h2 className="text-lg sm:text-xl font-semibold text-white">
                   Order Summary
                 </h2>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-1 sm:gap-2 flex-wrap">
                 {["monthly", "weekly", "today"].map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`px-3 py-1 text-xs font-medium rounded-lg transition-colors ${
+                    className={`px-2 sm:px-3 py-1 text-xs sm:text-sm font-medium rounded-lg transition-colors ${
                       activeTab === tab
                         ? "bg-gray-900 text-white"
                         : "bg-gray-700 text-gray-300 hover:bg-gray-600"
@@ -336,57 +342,69 @@ export default function DashboardCharts() {
               </div>
             </div>
 
-            <div className="flex items-end justify-between gap-2 px-4" style={{ height: "300px" }}>
-              {currentData.map((item, index) => {
-                const barHeight = (item.value / maxValue) * 240;
-                const isHovered = hoveredBar === index;
+            <div className="w-full overflow-x-auto">
+              <div className="flex items-end justify-between gap-1 sm:gap-2 px-2 sm:px-4 min-w-full" style={{ height: "clamp(200px, 60vw, 300px)" }}>
+                {currentData.map((item, index) => {
+                  const containerHeight = window.innerHeight > 768 ? 240 : 180;
+                  const barHeight = (item.value / maxValue) * containerHeight;
+                  const isHovered = hoveredBar === index;
 
-                return (
-                  <div
-                    key={index}
-                    className="flex-1 flex flex-col items-center gap-2"
-                    onMouseEnter={() => setHoveredBar(index)}
-                    onMouseLeave={() => setHoveredBar(null)}
-                  >
-                    <div className="relative w-full" style={{ height: "240px", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
-                      {isHovered && (
-                        <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-gray-700 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
-                          {item.value} orders
-                          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
-                            <div className="border-4 border-transparent border-t-gray-700"></div>
-                          </div>
-                        </div>
-                      )}
-                      <div
-                        className="w-full rounded-t-lg transition-all duration-300 cursor-pointer"
-                        style={{
-                          height: `${barHeight}px`,
-                          background: isHovered
-                            ? "linear-gradient(to bottom, #dc2626, #f97316)"
-                            : "linear-gradient(to bottom, #fca5a5, #fed7aa)",
-                          minHeight: "8px",
+                  return (
+                    <div
+                      key={index}
+                      className="flex-1 flex flex-col items-center gap-1 sm:gap-2 min-w-fit"
+                      onMouseEnter={() => setHoveredBar(index)}
+                      onMouseLeave={() => setHoveredBar(null)}
+                    >
+                      <div 
+                        className="relative w-full" 
+                        style={{ 
+                          height: `${containerHeight}px`, 
+                          display: "flex", 
+                          alignItems: "flex-end", 
+                          justifyContent: "center",
+                          minWidth: "32px"
                         }}
-                      />
+                      >
+                        {isHovered && (
+                          <div className="absolute -top-8 sm:-top-10 left-1/2 transform -translate-x-1/2 bg-gray-700 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10">
+                            {item.value} orders
+                            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
+                              <div className="border-3 sm:border-4 border-transparent border-t-gray-700"></div>
+                            </div>
+                          </div>
+                        )}
+                        <div
+                          className="w-full rounded-t-lg transition-all duration-300 cursor-pointer"
+                          style={{
+                            height: `${barHeight}px`,
+                            background: isHovered
+                              ? "linear-gradient(to bottom, #dc2626, #f97316)"
+                              : "linear-gradient(to bottom, #fca5a5, #fed7aa)",
+                            minHeight: "6px",
+                          }}
+                        />
+                      </div>
+                      <span className="text-xs text-gray-300 font-medium text-center">
+                        {item.date}
+                      </span>
                     </div>
-                    <span className="text-xs text-gray-300 font-medium">
-                      {item.date}
-                    </span>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-gray-700">
-              <div className="flex justify-between items-center">
+            <div className="mt-4 sm:mt-6 pt-4 border-t border-gray-700">
+              <div className="grid grid-cols-2 gap-4 sm:flex sm:justify-between sm:items-center">
                 <div>
                   <p className="text-xs text-gray-400">Total Orders</p>
-                  <p className="text-2xl font-bold text-white">
+                  <p className="text-xl sm:text-2xl font-bold text-white">
                     {currentData.reduce((sum, item) => sum + item.value, 0)}
                   </p>
                 </div>
                 <div className="text-right">
                   <p className="text-xs text-gray-400">Average per period</p>
-                  <p className="text-2xl font-bold text-white">
+                  <p className="text-xl sm:text-2xl font-bold text-white">
                     {Math.round(
                       currentData.reduce((sum, item) => sum + item.value, 0) /
                         currentData.length
