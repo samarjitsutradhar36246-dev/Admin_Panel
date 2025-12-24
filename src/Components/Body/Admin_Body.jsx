@@ -42,9 +42,11 @@ const deliveryPartners = [
 ];
 
 export default function AdminPanel() {
-  const [showFiveStarOnly, setShowFiveStarOnly] = useState(false);
+  const [] = useState(false);
   const [filterCancellations, setFilterCancellations] = useState(false);
   const [orders, setOrders] = useState([]);
+  // filter logic
+  const [selectedRating, setSelectedRating] = useState(""); // "" = show all
 
   useEffect(() => {
     const fetchData = async () => {
@@ -180,8 +182,8 @@ export default function AdminPanel() {
     },
   ];
 
-  const filteredReviews = showFiveStarOnly
-    ? reviews.filter((review) => review.rating === 5)
+  const filteredReviews = selectedRating
+    ? reviews.filter((review) => review.rating === Number(selectedRating))
     : reviews;
 
   const filteredCancellations = filterCancellations
@@ -232,12 +234,18 @@ export default function AdminPanel() {
                       <td className="py-1 px-0.5 text-xs text-white">
                         {order.Name}
                       </td>
-                      <td className="py-1 px-0.5">
+                      <td className="py-1 px-0.5 flex items-center">
                         <span
                           className={`text-[10px] px-1.5 py-0.5 rounded-full ${getStatusColor(
                             order.Status
                           )}`}>
                           {order.Status}
+                        </span>
+                        <span
+                          className={`text-[10px] px-1.5 py-0.5 rounded-full ml-auto ${getStatusColor(
+                            order.Order_Id
+                          )}`}>
+                          {order.Order_Id}
                         </span>
                       </td>
                     </tr>
@@ -256,15 +264,17 @@ export default function AdminPanel() {
                   Customer Reviews
                 </h2>
               </div>
-              <label className="flex items-center gap-1.5 cursor-pointer text-white">
-                <input
-                  type="checkbox"
-                  checked={showFiveStarOnly}
-                  onChange={(e) => setShowFiveStarOnly(e.target.checked)}
-                  className="w-3 h-3 rounded"
-                />
-                <span className="text-[10px] text-white">5★</span>
-              </label>
+              <select
+                value={selectedRating}
+                onChange={(e) => setSelectedRating(e.target.value)}
+                className="ml-auto bg-gray-800 text-white text-xs rounded p-1">
+                <option value="">All</option>
+                <option value="5">5★</option>
+                <option value="4">4★</option>
+                <option value="3">3★</option>
+                <option value="2">2★</option>
+                <option value="1">1★</option>
+              </select>
             </div>
 
             <div className="overflow-y-auto h-44 space-y-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-thumb-opacity-50">
