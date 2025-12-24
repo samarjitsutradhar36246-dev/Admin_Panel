@@ -12,7 +12,7 @@ const FoodBNBSidebar = ({ isOpen, toggleSidebar }) => {
     { name: "Dashboard", icon: Home, href: "/" },
     { name: "Orders", icon: ShoppingCart, href: "/orders" },
     { name: "Login", icon: Users, href: "/login" },
-    { name: "Settings", icon: Settings, href: "/settings" },
+    { name: "Settings", icon: Settings, href: "/setting" },
   ];
 
   return (

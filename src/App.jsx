@@ -66,6 +66,7 @@ function App() {
         <AdminPanel />
         <DashboardCharts />
         <OrderList />
+        
       </main>
     </div>
   );
