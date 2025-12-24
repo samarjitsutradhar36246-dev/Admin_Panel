@@ -2,22 +2,23 @@ import React from "react";
 import { Home, ShoppingCart, Users, Settings } from "lucide-react";
 import FoodBNBLogo from "../../assets/foodbnb1.svg";
 
-/**
- * FoodBNB Admin Panel Sidebar Component
- * Simple sidebar with href links - no React routing
- */
 const FoodBNBSidebar = ({ isOpen, toggleSidebar }) => {
   // Navigation items configuration
   const navigationItems = [
-    { name: "Dashboard", icon: Home, href: "/" },
-    { name: "Orders", icon: ShoppingCart, href: "/orders" },
-    { name: "Login", icon: Users, href: "/login" },
-    { name: "Settings", icon: Settings, href: "/setting" },
+    { name: "Dashboard", icon: Home, path: "/" },
+    { name: "Orders", icon: ShoppingCart, path: "/orders" },
+    { name: "Login", icon: Users, path: "/login" },
+    { name: "Settings", icon: Settings, path: "/settings" },
   ];
+
+  const handleNavigation = (path) => {
+    window.history.pushState({}, "", path);
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  };
 
   return (
     <>
-      {/* Overlay - Appears when sidebar is open on mobile/tablet */}
+      {/* Overlay */}
       <div
         className={`fixed inset-0 bg-black bg-opacity-70 z-60 transition-opacity duration-300 lg:hidden ${
           isOpen
@@ -35,7 +36,7 @@ const FoodBNBSidebar = ({ isOpen, toggleSidebar }) => {
         }`}
         style={{ top: "64px", height: "calc(100vh - 64px)" }}
       >
-        {/* Sidebar Header with Logo and Brand Name */}
+        {/* Sidebar Header */}
         <div className="flex items-center gap-3 p-6 border-b border-white border-opacity-20">
           <div className="w-10 h-10 flex items-center justify-center overflow-hidden rounded-lg">
             <img
@@ -57,9 +58,9 @@ const FoodBNBSidebar = ({ isOpen, toggleSidebar }) => {
 
               return (
                 <li key={item.name}>
-                  <a
-                    href={item.href}
-                    className="flex items-center gap-3 px-4 py-3 rounded-lg text-white 
+                  <button
+                    onClick={() => handleNavigation(item.path)}
+                    className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-white 
                       hover:bg-white/10 hover:backdrop-blur-sm transition-all duration-200 group"
                   >
                     <IconComponent
@@ -67,7 +68,7 @@ const FoodBNBSidebar = ({ isOpen, toggleSidebar }) => {
                       className="text-white group-hover:scale-110 transition-transform duration-200"
                     />
                     <span className="font-medium text-white">{item.name}</span>
-                  </a>
+                  </button>
                 </li>
               );
             })}
