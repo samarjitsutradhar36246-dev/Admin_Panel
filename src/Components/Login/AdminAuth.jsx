@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-import { app } from "../../Firebase";
+import app from "../../Firebase";
 
 // Adjust path if needed
 

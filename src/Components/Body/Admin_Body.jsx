@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../Firebase";
 import {
   ShoppingCart,
   Star,
@@ -8,6 +10,7 @@ import {
   PlusCircle,
   Truck,
 } from "lucide-react";
+import OrderList from "../OrderList/OrderList";
 
 const restaurants = [
   "Food Hub",
@@ -41,57 +44,90 @@ const deliveryPartners = [
 export default function AdminPanel() {
   const [showFiveStarOnly, setShowFiveStarOnly] = useState(false);
   const [filterCancellations, setFilterCancellations] = useState(false);
+  const [orders, setOrders] = useState([]);
 
-  const orders = [
-    {
-      id: "ORD-001",
-      date: "2024-12-15",
-      customer: "John Smith",
-      status: "Delivered",
-    },
-    {
-      id: "ORD-002",
-      date: "2024-12-14",
-      customer: "Emma Wilson",
-      status: "Processing",
-    },
-    {
-      id: "ORD-003",
-      date: "2024-12-13",
-      customer: "Michael Brown",
-      status: "Shipped",
-    },
-    {
-      id: "ORD-004",
-      date: "2024-12-12",
-      customer: "Sarah Davis",
-      status: "Delivered",
-    },
-    {
-      id: "ORD-005",
-      date: "2024-12-11",
-      customer: "James Taylor",
-      status: "Processing",
-    },
-    {
-      id: "ORD-006",
-      date: "2025-12-11",
-      customer: "Holland Taylor",
-      status: "Processing",
-    },
-    {
-      id: "ORD-007",
-      date: "2025-12-10",
-      customer: "Samuel Warron",
-      status: "Cancelled",
-    },
-    {
-      id: "ORD-008",
-      date: "2025-12-10",
-      customer: "Hilda Morgan",
-      status: "Delivered",
-    },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      const ordersSnap = await getDocs(collection(db, "Order-History"));
+      setOrders(ordersSnap.docs.map((doc) => doc.data()));
+
+      console.log(
+        "Fetched orders:",
+        ordersSnap.docs.map((doc) => doc.data())
+      );
+      // console.log("Orders state:", orders.length);
+      // const reviewsSnap = await getDocs(collection(db, "reviews"));
+      // setReviews(reviewsSnap.docs.map((doc) => doc.data()));
+
+      // const cancelSnap = await getDocs(collection(db, "cancellations"));
+      // setCancellations(cancelSnap.docs.map((doc) => doc.data()));
+
+      // const restSnap = await getDocs(collection(db, "restaurants"));
+      // setRestaurants(restSnap.docs.map((doc) => doc.data()));
+
+      // const newRestSnap = await getDocs(collection(db, "newRestaurants"));
+      // setNewRestaurants(newRestSnap.docs.map((doc) => doc.data()));
+
+      // const partnersSnap = await getDocs(collection(db, "deliveryPartners"));
+      // setDeliveryPartners(partnersSnap.docs.map((doc) => doc.data()));
+    };
+
+    fetchData();
+  }, []);
+  useEffect(() => {
+    console.log("Orders state updated:", orders);
+  }, [orders]);
+
+  // const orders = [
+  //   {
+  //     id: "ORD-001",
+  //     date: "2024-12-15",
+  //     customer: "John Smith",
+  //     status: "Delivered",
+  //   },
+  //   {
+  //     id: "ORD-002",
+  //     date: "2024-12-14",
+  //     customer: "Emma Wilson",
+  //     status: "Processing",
+  //   },
+  //   {
+  //     id: "ORD-003",
+  //     date: "2024-12-13",
+  //     customer: "Michael Brown",
+  //     status: "Shipped",
+  //   },
+  //   {
+  //     id: "ORD-004",
+  //     date: "2024-12-12",
+  //     customer: "Sarah Davis",
+  //     status: "Delivered",
+  //   },
+  //   {
+  //     id: "ORD-005",
+  //     date: "2024-12-11",
+  //     customer: "James Taylor",
+  //     status: "Processing",
+  //   },
+  //   {
+  //     id: "ORD-006",
+  //     date: "2025-12-11",
+  //     customer: "Holland Taylor",
+  //     status: "Processing",
+  //   },
+  //   {
+  //     id: "ORD-007",
+  //     date: "2025-12-10",
+  //     customer: "Samuel Warron",
+  //     status: "Cancelled",
+  //   },
+  //   {
+  //     id: "ORD-008",
+  //     date: "2025-12-10",
+  //     customer: "Hilda Morgan",
+  //     status: "Delivered",
+  //   },
+  // ];
 
   const reviews = [
     {
@@ -185,25 +221,23 @@ export default function AdminPanel() {
                 <tbody className="text-xs">
                   {orders.map((order) => (
                     <tr
-                      key={order.id}
-                      className="border-b border-gray-700 border-opacity-20"
-                    >
-                      <td className="py-1 px-0.5 text-xs text-white">
+                      key={order["Order-Id"]}
+                      className="border-b border-gray-700 border-opacity-20">
+                      {/* <td className="py-1 px-0.5 text-xs text-white">
                         {order.date}
-                      </td>
-                      <td className="py-1 px-0.5 text-xs font-medium text-white">
-                        {order.id}
-                      </td>
+                      </td> */}
+                      {/* <td className="py-1 px-0.5 text-xs font-medium text-white">
+                        {order.Order-Id}
+                      </td> */}
                       <td className="py-1 px-0.5 text-xs text-white">
-                        {order.customer}
+                        {order.Name}
                       </td>
                       <td className="py-1 px-0.5">
                         <span
                           className={`text-[10px] px-1.5 py-0.5 rounded-full ${getStatusColor(
-                            order.status
-                          )}`}
-                        >
-                          {order.status}
+                            order.Status
+                          )}`}>
+                          {order.Status}
                         </span>
                       </td>
                     </tr>
@@ -237,8 +271,7 @@ export default function AdminPanel() {
               {filteredReviews.map((review, index) => (
                 <div
                   key={index}
-                  className="rounded p-2 border border-gray-700 border-opacity-20 text-white"
-                >
+                  className="rounded p-2 border border-gray-700 border-opacity-20 text-white">
                   <div className="flex items-center justify-between mb-1">
                     <span className="font-medium text-[10px] text-white">
                       {review.customer}
@@ -295,8 +328,7 @@ export default function AdminPanel() {
               {filteredCancellations.map((cancel) => (
                 <div
                   key={cancel.id}
-                  className="rounded p-1.5 border border-gray-700 border-opacity-20 text-white"
-                >
+                  className="rounded p-1.5 border border-gray-700 border-opacity-20 text-white">
                   <div className="flex justify-between items-start">
                     <span className="font-medium text-[10px] text-white">
                       {cancel.id}
@@ -357,8 +389,7 @@ export default function AdminPanel() {
               {newRestaurants.map((res, index) => (
                 <div
                   key={index}
-                  className="rounded p-1.5 border border-gray-700 border-opacity-20 text-white"
-                >
+                  className="rounded p-1.5 border border-gray-700 border-opacity-20 text-white">
                   <div className="flex justify-between text-[10px]">
                     <span className="font-medium text-white">{res.name}</span>
                     <span className="opacity-70 text-white">{res.date}</span>
@@ -390,8 +421,7 @@ export default function AdminPanel() {
               {deliveryPartners.map((partner, index) => (
                 <div
                   key={index}
-                  className="rounded p-1.5 border border-gray-700 border-opacity-20 text-white"
-                >
+                  className="rounded p-1.5 border border-gray-700 border-opacity-20 text-white">
                   <div className="flex justify-between text-[10px]">
                     <span className="font-medium text-white">
                       {partner.name}
